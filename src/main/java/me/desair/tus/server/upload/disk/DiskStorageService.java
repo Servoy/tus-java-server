@@ -262,6 +262,20 @@ public class DiskStorageService extends AbstractDiskBasedService implements Uplo
     }
 
     @Override
+    public Path getUploadedPath(String uploadURI, String ownerKey)
+            throws IOException, UploadNotFoundException {
+
+        UploadId id = idFactory.readUploadId(uploadURI);
+
+        UploadInfo uploadInfo = getUploadInfo(id);
+        if (uploadInfo == null || !Objects.equals(uploadInfo.getOwnerKey(), ownerKey)) {
+            throw new UploadNotFoundException("The upload with id " + id + " could not be found for owner " + ownerKey);
+        } else {
+            return getBytesPath(id);
+        }
+    }
+    
+    @Override
     public void copyUploadTo(UploadInfo info, OutputStream outputStream)
             throws UploadNotFoundException, IOException {
 

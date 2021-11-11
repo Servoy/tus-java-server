@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.ref.WeakReference;
+import java.nio.file.Path;
 import java.util.Objects;
 
 import me.desair.tus.server.exception.TusException;
@@ -119,6 +120,11 @@ public class ThreadLocalCachedStorageAndLockingService implements UploadLockingS
         return storageServiceDelegate.getUploadedBytes(id);
     }
 
+    @Override
+    public Path getUploadedPath(String uploadURI, String ownerKey) throws IOException, UploadNotFoundException {
+        return storageServiceDelegate.getUploadedPath(uploadURI, ownerKey);
+    }
+    
     @Override
     public void copyUploadTo(UploadInfo info, OutputStream outputStream) throws UploadNotFoundException, IOException {
         storageServiceDelegate.copyUploadTo(info, outputStream);

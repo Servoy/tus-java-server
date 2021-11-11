@@ -3,6 +3,7 @@ package me.desair.tus.server;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
 import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -336,6 +337,20 @@ public class TusFileUploadService {
         }
     }
 
+    
+	public Path getUploadedPath(String uploadURI)
+			throws IOException, TusException {
+		return getUploadedPath(uploadURI, null);
+	}
+
+	public Path getUploadedPath(String uploadURI, String ownerKey) 
+			throws IOException, TusException {
+		 try (UploadLock lock = uploadLockingService.lockUploadByUri(uploadURI)) {
+
+	            return uploadStorageService.getUploadedPath(uploadURI, ownerKey);
+	        }
+	}
+
     /**
      * Get the information on the upload corresponding to the given upload URI
      *
@@ -481,5 +496,6 @@ public class TusFileUploadService {
             this.uploadLockingService = service;
         }
     }
+
 
 }

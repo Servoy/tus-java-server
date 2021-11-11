@@ -3,6 +3,7 @@ package me.desair.tus.server.upload;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Path;
 
 import me.desair.tus.server.exception.TusException;
 import me.desair.tus.server.exception.UploadNotFoundException;
@@ -90,6 +91,15 @@ public interface UploadStorageService {
     InputStream getUploadedBytes(UploadId id) throws IOException, UploadNotFoundException;
 
     /**
+     * returns the underlying Path of the uploaded file if it has one.
+     * 
+     * @param uploadURI
+     * @param ownerKey
+     * @return
+     */
+	Path getUploadedPath(String uploadURI, String ownerKey) throws IOException, UploadNotFoundException;
+
+    /**
      * Copy the uploaded bytes to the given output stream
      * @param info The upload of which we should copy the bytes
      * @param outputStream The output stream where we have to copy the bytes to
@@ -145,4 +155,5 @@ public interface UploadStorageService {
      * @param idFactory The {@link UploadIdFactory} to use within this storage service
      */
     void setIdFactory(UploadIdFactory idFactory);
+
 }
